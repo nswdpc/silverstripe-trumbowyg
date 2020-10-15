@@ -1,10 +1,21 @@
 # Trumbowyg editor field for Silverstripe
 
-Decorate textarea fields with the Trumbowyg editor.
+Decorate textarea fields with the [Trumbowyg](https://github.com/Alex-D/Trumbowyg) editor.
 
-Supports:
-+ content sanitising
-+ restricted feature set by default (see below)
+Trumbowyg is "A lightweight and amazing WYSIWYG JavaScript editor - 20kB only (8kB gzip)"
+
+It is useful for gathering content where some form of formatting in HTML is required.
+
+This module supports:
++ content sanitising of submitted content (on the client side and server side)
++ restricted feature set by default ([see documentation](./docs/en/001_index.md))
+
+The module will not support:
++ file uploads
++ image uploads
++ image insertion
+
+Please use dedicated upload fields for that purpose.
 
 This field is not intended for use in the administration area (although PRs are welcome for that)
 
@@ -13,6 +24,8 @@ This field is not intended for use in the administration area (although PRs are 
 + silverstripe/framework ^4
 + php-xml extension
 + Trumbowyg depends on jQuery (latest at time of release)
+
+The field pulls in required JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity hashes.
 
 ## Installation
 
