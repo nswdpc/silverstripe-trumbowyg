@@ -1,0 +1,78 @@
+---
+Name: nswdpc-trumbowyg-editor
+---
+NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField:
+  # warning: prior to modifying these, read the README.md
+  editor_options:
+    semantic: true
+    removeformatPasted: true
+    resetCss: true
+    autogrow: true
+    btns:
+      -
+        - undo
+        - redo
+      -
+        - formatting
+      -
+        - strong
+        - em
+      -
+        - link
+      -
+        - unorderedList
+        - orderedList
+      -
+        - removeformat
+      -
+        - fullscreen
+    # tags to remove from the editor
+    tagsToRemove:
+      - applet
+      - area
+      - base
+      - body
+      - button
+      - details
+      - embed
+      - form
+      - frame
+      - frameset
+      - head
+      - html
+      - iframe
+      - img
+      - input
+      - link
+      - maction
+      - map
+      - math
+      - object
+      - option
+      - picture
+      - script
+      - select
+      - source
+      - style
+      - svg
+      - textarea
+      - video
+    tagsToKeep:
+      - p
+      - i
+      - blockquote
+      - b
+      - strong
+      - em
+      - br
+      - h1
+      - h2
+      - h3
+      - h4
+      - h5
+      - h6
+      - ol
+      - ul
+      - li
+      - a
+      - strike
