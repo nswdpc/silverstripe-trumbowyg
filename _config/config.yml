@@ -13,8 +13,10 @@ NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField:
         - undo
         - redo
       -
-        - formatting
-      -
+        - p
+        - h3
+        - h4
+        - h5
         - strong
         - em
       -
@@ -57,6 +59,8 @@ NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField:
       - svg
       - textarea
       - video
+      - h1
+      - h2
     tagsToKeep:
       - p
       - i
@@ -65,8 +69,6 @@ NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField:
       - strong
       - em
       - br
-      - h1
-      - h2
       - h3
       - h4
       - h5
