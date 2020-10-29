@@ -17,7 +17,7 @@ class ContentSanitiser {
 
     // default allowed tags, if none are specified in configuration
     private static $default_allowed_html_tags = "<p><i><blockquote><b><strong><em><br>"
-                                . "<h1><h2><h3><h4><h5><h6>"
+                                . "<h3><h4><h5><h6>"
                                 . "<ol><ul><li><a><strike>";
 
     /**
