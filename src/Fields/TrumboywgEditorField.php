@@ -8,7 +8,6 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 use Exception;
-use DOMDocument;
 
 
 class TrumboywgEditorField extends TextareaField {
