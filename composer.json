@@ -25,7 +25,12 @@
                  "tests/"
              ]
          }
-     },
+    },
+    "extra" : {
+        "expose" : [
+            "client/static"
+        ]
+    },
     "require": {
         "silverstripe/framework" : "^4",
         "ezyang/htmlpurifier" : "^4.13"

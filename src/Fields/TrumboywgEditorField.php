@@ -3,6 +3,9 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Core\Convert;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\Manifest\ModuleResourceLoader;
+use SilverStripe\Core\Manifest\ResourceURLGenerator;
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\View\ArrayData;
@@ -17,6 +20,12 @@ class TrumboywgEditorField extends TextareaField {
     ];
 
     private static $include_own_jquery = true;
+
+    /**
+     * @var string
+     * Chore: when updating the version, ensure the SRI hashes are updated
+     */
+    protected $version = "2.23.0";
 
     /**
      * Get field options
@@ -44,7 +53,31 @@ class TrumboywgEditorField extends TextareaField {
                 ]
             ];
         }
+
+        // ensure tagsToRemove is set by us
         $options['tagsToRemove'] = self::getDeniedTags();
+
+        // if no svgPath defined in configuration, set one up
+        if(empty($options['svgPath'])) {
+            $svgPath = '';
+
+            if($sprite = ModuleResourceLoader::singleton()
+                ->resolvePath(
+                    "nswdpc/silverstripe-trumbowyg:client/static/svg/icons.{$this->version}.svg"
+                )
+            ) {
+                // get the path without the ?m= nonce
+                $svgPath = Injector::inst()->get(ResourceURLGenerator::class)
+                    ->setNonceStyle(null)
+                    ->urlForResource( $sprite );
+            }
+            // load it up, if found
+            if($svgPath) {
+                $options['svgPath'] = $svgPath;
+                $options['svgAbsoluteUsePath'] = false;
+            }
+        }
+
         return $options;
     }
 
@@ -87,7 +120,7 @@ class TrumboywgEditorField extends TextareaField {
             );
         }
         Requirements::javascript(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/trumbowyg.min.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/{$this->version}/trumbowyg.min.js",
             [
                 "integrity" => "sha512-sffB9/tXFFTwradcJHhojkhmrCj0hWeaz8M05Aaap5/vlYBfLx5Y7woKi6y0NrqVNgben6OIANTGGlojPTQGEw==",
                 "crossorigin" => "anonymous"
@@ -102,7 +135,7 @@ class TrumboywgEditorField extends TextareaField {
             "trumbowyg_editor"
         );
         Requirements::css(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/ui/trumbowyg.min.css",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/{$this->version}/ui/trumbowyg.min.css",
             "screen",
             [
                 "integrity" => "sha512-iw/TO6rC/bRmSOiXlanoUCVdNrnJBCOufp2s3vhTPyP1Z0CtTSBNbEd5wIo8VJanpONGJSyPOZ5ZRjZ/ojmc7g==",
