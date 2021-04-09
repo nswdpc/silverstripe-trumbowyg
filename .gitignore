@@ -1,3 +1,8 @@
 /client/node_modules
 /vendor/
+/resources/
+/assets/
 .DS_Store
+/.php_cs.cache
+/composer.lock
+/silverstripe-cache/

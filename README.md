@@ -2,47 +2,42 @@
 
 Decorate textarea fields with the [Trumbowyg](https://github.com/Alex-D/Trumbowyg) editor.
 
-Trumbowyg is "A lightweight and amazing WYSIWYG JavaScript editor - 20kB only (8kB gzip)"
-
-It is useful for gathering content where some form of formatting in HTML is required.
-
 This module supports:
-+ content sanitising of submitted content (on the client side and server side)
++ content sanitising of submitted content on the client side using Trumbowyg configuration rules and server side using [HTMLPurifier](https://github.com/ezyang/htmlpurifier))
 + restricted feature set by default ([see documentation](./docs/en/001_index.md))
 
-The module will not support:
+## Use cases
+
+This editor field is useful for gathering content where some form of formatting in HTML is required. It is not intended for use in the administration area (although PRs are welcome for that, for example a restricted content editing field)
+
+As the goal is only a restricted feature set for simple content submissions, the module will not support:
+
 + file uploads
 + image uploads
 + image insertion
 
-Please use dedicated upload fields for that purpose.
-
-This field is not intended for use in the administration area (although PRs are welcome for that)
+Please use dedicated upload fields for handling file uploads.
 
 ## Requirements
 
-+ silverstripe/framework ^4
-+ php-xml extension
-+ Trumbowyg depends on jQuery (latest at time of release)
+Per [composer.json](/composer.json):
 
-The field pulls in required JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity hashes.
++ silverstripe/framework ^4
++ jQuery 3.6.0
+
+The field pulls in required Trumbowyg JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity (SRI) hashes.
+
+If you wish to use your own jQuery, set the  `TrumboywgEditorField.use_own_jquery` configuration value to `true` in your project configuration.
 
 ## Installation
 
-```bash
+```shell
 composer require nswdpc/silverstripe-trumbowyg
 ```
 
 ## Usage
 
-```php
-use NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField;
-
-// TrumboywgEditorField extends TextareaField
-$field = TrumboywgEditorField::create('MyEditorField', 'Write something')
-            ->setDescription("This is a description")
-            ->setRightTitle("This is a right title");
-```
+See [the basic example](./docs/en/01_index.md#basic-example)
 
 ## License
 
