@@ -37,7 +37,7 @@ composer require nswdpc/silverstripe-trumbowyg
 
 ## Usage
 
-See [the basic example](./docs/en/01_index.md#basic-example)
+See [the basic example](./docs/en/001_index.md#basic-example)
 
 ## License
 
