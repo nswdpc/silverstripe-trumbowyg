@@ -79,33 +79,33 @@ class TrumboywgEditorField extends TextareaField {
 
         if($this->config()->get('include_own_jquery')) {
             Requirements::javascript(
-                "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js",
+                "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
                 [
-                    "integrity" => "sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==",
+                    "integrity" => "sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==",
                     "crossorigin" => "anonymous"
                 ]
             );
         }
         Requirements::javascript(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/trumbowyg.min.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/trumbowyg.min.js",
             [
-                "integrity" => "sha512-l6MMck8/SpFCgbJnIEfVsWQ8MaNK/n2ppTiELW3I2BFY5pAm/WjkNHSt+2OD7+CZtygs+jr+dAgzNdjNuCU7kw==",
+                "integrity" => "sha512-sffB9/tXFFTwradcJHhojkhmrCj0hWeaz8M05Aaap5/vlYBfLx5Y7woKi6y0NrqVNgben6OIANTGGlojPTQGEw==",
                 "crossorigin" => "anonymous"
             ]
         );
         // import template with options
         $custom_script = ArrayData::create([
-            'Options' => json_encode( $this->getFieldOptions(), JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT )
+            'Options' => json_encode( $this->getFieldOptions(), JSON_UNESCAPED_SLASHES )
         ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
         Requirements::customScript(
             $custom_script,
             "trumbowyg_editor"
         );
         Requirements::css(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/ui/trumbowyg.min.css",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/ui/trumbowyg.min.css",
             "screen",
             [
-                "integrity" => "sha512-XjpikIIW1P7jUS8ZWIznGs9KHujZQxhbnEsqMVQ5GBTTRmmJe32+ULipOxFePB8F8j9ahKmCjyJJ22VNEX60yg==",
+                "integrity" => "sha512-iw/TO6rC/bRmSOiXlanoUCVdNrnJBCOufp2s3vhTPyP1Z0CtTSBNbEd5wIo8VJanpONGJSyPOZ5ZRjZ/ojmc7g==",
                 "crossorigin" => "anonymous"
             ]
         );
