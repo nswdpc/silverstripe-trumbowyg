@@ -72,7 +72,7 @@ class ContentSanitiser {
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
             'HTML.AllowedAttributes' => ['href'],
-            'URI.AllowedSchemes' => ['http','https'],
+            'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true
         ];
     }
