@@ -42,7 +42,7 @@ class TrumboywgEditorField extends TextareaField {
                 "autogrow" => true,
                 "buttons" => [
                     [ "undo", "redo" ],
-                    [ "p","h3", "h4", "h5", "strong", "em" ],
+                    [ "p", "h2","h3", "h4", "h5", "strong", "em" ],
                     [ "link", "" ],
                     [ "unorderedList", "orderedList" ],
                     [ "removeformat" ],
