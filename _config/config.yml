@@ -1,7 +1,7 @@
 ---
 Name: nswdpc-trumbowyg-editor
 ---
-NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField:
+NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField:
   # warning: prior to modifying these, read the README.md
   editor_options:
     semantic: true
