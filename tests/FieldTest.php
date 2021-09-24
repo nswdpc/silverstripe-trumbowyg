@@ -110,7 +110,7 @@ class FieldTest extends SapphireTest {
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
-            'URI.AllowedSchemes' => ['http','https'],
+            'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
