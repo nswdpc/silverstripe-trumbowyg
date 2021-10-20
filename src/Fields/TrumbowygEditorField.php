@@ -32,7 +32,7 @@ class TrumbowygEditorField extends TextareaField {
                 "removeformatPasted" => true,
                 "resetCss" => true,
                 "autogrow" => true,
-                "buttons" => [
+                "btns" => [
                     [ "undo", "redo" ],
                     [ "p", "h2","h3", "h4", "h5", "strong", "em" ],
                     [ "link", "" ],
