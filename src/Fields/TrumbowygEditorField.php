@@ -99,11 +99,12 @@ class TrumbowygEditorField extends TextareaField {
         );
         // import template with options
         $custom_script = ArrayData::create([
+            'ID' => $this->ID(),
             'Options' => json_encode( $this->getFieldOptions(), JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT )
         ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
         Requirements::customScript(
             $custom_script,
-            "trumbowyg_editor"
+            "trumbowyg_editor_" . $this->ID()
         );
         Requirements::css(
             "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css",
