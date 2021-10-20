@@ -41,7 +41,10 @@ class TrumbowygEditorField extends TextareaField {
                     [ "fullscreen" ]
                 ],
                 "tagsToKeep" => [
-                    "p"
+                    "p",
+                    "i","b", "strong", "em", "br",
+                    "h2","h3","h4","h5","h6",
+                    "ol","ul","li","a"
                 ]
             ];
         }
