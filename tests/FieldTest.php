@@ -81,7 +81,10 @@ Not allowed header 1
 <p>Paragraph 3</p>
 <blockquote>This is allowed cite is not</blockquote>
 <p>Email links <a href="mailto:someone@example.com?subject=spam">should be allowed</a></p>
-<ul><li>list item 1</li><li>list item 2</li></ul><ol><li>list item 1</li><li>list item 2</li></ol><p><strong>strong 1</strong><em>Emphasis 1</em></p>
+<ul><li>list item 1</li><li>list item 2</li></ul>
+<ol><li>list item 1</li><li>list item 2</li></ol>
+<p><strong>strong 1</strong><em>Emphasis 1</em></p>
+
 brokenScript();
 HTML;
 
