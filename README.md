@@ -27,7 +27,7 @@ Per [composer.json](/composer.json):
 
 The field pulls in required Trumbowyg JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity (SRI) hashes.
 
-If you wish to use your own jQuery, set the  `TrumboywgEditorField.use_own_jquery` configuration value to `true` in your project configuration.
+If you wish to use your own jQuery, set the  `TrumboywgEditorField.use_own_jquery` configuration value to `false` in your project configuration. When false, the module will not include its own jQuery.
 
 ## Installation
 

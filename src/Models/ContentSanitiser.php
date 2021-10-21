@@ -4,6 +4,7 @@ namespace NSWDPC\Utilities\Trumbowyg;
 
 use Silverstripe\Core\Config\Configurable;
 use Silverstripe\Core\Config\Config;
+use Silverstripe\ORM\ValidationException;
 
 /**
  * Sanitise content provided by a trumbowyg field
@@ -19,21 +20,8 @@ class ContentSanitiser {
      */
     private static $default_allowed_html_tags = "<p><i><blockquote>"
         . "<b><strong><em><br>"
-        . "<h3><h4><h5><h6>"
+        . "<h2><h3><h4><h5><h6>"
         . "<ol><ul><li><a><strike>";
-
-
-    /**
-     * Retains allowed tags from the provided html
-     * The module requires "href" attributes, these need to have e.g "javascript:" removed
-     * @param string $html
-     * @returns string
-     */
-    private static function strip_html($html) : string {
-        $options = Config::inst()->get(TrumboywgEditorField::class, 'editor_options');
-        $allowedHTMLTags = self::getAllowedHTMLTags();
-        return strip_tags($html, $allowedHTMLTags);
-    }
 
     /**
      * Return tags suitable for strip_tags
@@ -78,12 +66,12 @@ class ContentSanitiser {
     }
 
     /**
-     * Restrict tags that can be used and remove attributes
-     * The module requires "href" attributes, these need to have e.g "javascript:" removed
+     * Clean dirty HTML using HTML purifier
+     * If the purification fails in any way, an entitised version of the HTML is returned
      * @param string $html
-     * @returns string
+     * @return string
      */
-    public static function clean($html) : string {
+    public static function clean($dirtyHtml) : string {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
             $configuration = self::generateConfig();
@@ -91,11 +79,10 @@ class ContentSanitiser {
                 $htmlPurifierConfig->set($key, $value);
             }
             $purifier = new \HTMLPurifier($htmlPurifierConfig);
-            $cleaned = $purifier->purify($html);
+            $cleaned = $purifier->purify($dirtyHtml);
+            return $cleaned;
         } catch (\Exception $e) {
-            // the least worst option on error is to return just the HTML with the allowed tags
-            $cleaned = self::strip_html($html);
+            return htmlentities($dirtyHtml, ENT_QUOTES|ENT_HTML5, "UTF-8");
         }
-        return $cleaned;
     }
 }

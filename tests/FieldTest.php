@@ -58,30 +58,35 @@ class FieldTest extends SapphireTest {
             $options
         );
 
-        $dirtyHtml = "<h1>Not allowed header 1</h1>"
-                . "<h4>Header 4</h4>"
-                . "<p>Paragraph 1 <a href=\"javascript:console.log(1);\">click here!</a></p>"
-                . "<p>Paragraph 2 <a href=\"https://valid.example.com\">valid link</a></p>"
-                . "<p><span onclick=\"doSomething();\">Paragraph 3</span></p>"
-                . "<blockquote>This is allowed <cite>cite is not</cite></blockquote>"
-                . "<p>Email links <a href=\"mailto:someone@example.com?subject=spam\">should not be allowed</a></p>"
-                . "<ul><li>list item 1</li><li>list item 2</li></ul>"
-                . "<ol><li>list item 1</li><li>list item 2</li></ol>"
-                . "<p><strong>strong 1</strong><em>Emphasis 1</em></p>"
-                . "<script>eval();</script>"
-                . "<scr+ipt>brokenScript();</script>";
+        $dirtyHtml = <<<HTML
+<h1>Not allowed header 1</h1>
+<h4>Header 4</h4>
+<p>Paragraph 1 <a href="javascript:console.log(1);">click here!</a></p>
+<p>Paragraph 2 <a href="https://valid.example.com">valid link</a></p>
+<p><span onclick="doSomething();">Paragraph 3</span></p>
+<blockquote>This is allowed <cite>cite is not</cite></blockquote>
+<p>Email links <a href="mailto:someone@example.com?subject=spam">should be allowed</a></p>
+<ul><li>list item 1</li><li>list item 2</li></ul>
+<ol><li>list item 1</li><li>list item 2</li></ol>
+<p><strong>strong 1</strong><em>Emphasis 1</em></p>
+<script>eval();</script>
+<scr+ipt>brokenScript();</script>
+HTML;
 
-        $cleanHtml = "Not allowed header 1"
-                . "<h4>Header 4</h4>"
-                . "<p>Paragraph 1 <a>click here!</a></p>"
-                . "<p>Paragraph 2 <a href=\"https://valid.example.com\">valid link</a></p>"
-                . "<p>Paragraph 3</p>"
-                . "<blockquote>This is allowed cite is not</blockquote>"
-                . "<p>Email links <a>should not be allowed</a></p>"
-                . "<ul><li>list item 1</li><li>list item 2</li></ul>"
-                . "<ol><li>list item 1</li><li>list item 2</li></ol>"
-                . "<p><strong>strong 1</strong><em>Emphasis 1</em></p>"
-                . 'brokenScript();';
+        $cleanHtml = <<<HTML
+Not allowed header 1
+<h4>Header 4</h4>
+<p>Paragraph 1 <a>click here!</a></p>
+<p>Paragraph 2 <a href="https://valid.example.com">valid link</a></p>
+<p>Paragraph 3</p>
+<blockquote>This is allowed cite is not</blockquote>
+<p>Email links <a href="mailto:someone@example.com?subject=spam">should be allowed</a></p>
+<ul><li>list item 1</li><li>list item 2</li></ul>
+<ol><li>list item 1</li><li>list item 2</li></ol>
+<p><strong>strong 1</strong><em>Emphasis 1</em></p>
+
+brokenScript();
+HTML;
 
         $field = TrumboywgEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
 
@@ -94,6 +99,9 @@ class FieldTest extends SapphireTest {
 
     }
 
+    /**
+     * test custom config generation
+     */
     public function testGenerateConfig() {
         $tags = "<p><i><u><h2>";
         Config::inst()->update(
@@ -110,9 +118,10 @@ class FieldTest extends SapphireTest {
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
-            'URI.AllowedSchemes' => ['http','https'],
+            'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
     }
+
 }
