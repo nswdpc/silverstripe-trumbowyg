@@ -28,14 +28,7 @@ class ContentSanitiser {
      * @return string
      */
     public static function getAllowedHTMLTags() : string {
-        $allowedHTMLTags = "";
-        if(!empty($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
-            // mogrify into something for strip_tags
-            $allowedHTMLTags = "<" . implode("><", $options['tagsToKeep']) . ">";
-        }
-        if($allowedHTMLTags == "") {
-            $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
-        }
+        $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
         if($allowedHTMLTags == "") {
             $allowedHTMLTags = "<p>";// disallow all
         }

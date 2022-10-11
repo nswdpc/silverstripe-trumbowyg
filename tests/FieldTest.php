@@ -124,4 +124,29 @@ HTML;
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
     }
 
+    /**
+     * test that only <p> tags are returned
+     */
+    public function testEmptyConfig() {
+        $tags = "";
+        Config::inst()->update(
+            ContentSanitiser::class,
+            'default_allowed_html_tags',
+            $tags
+        );
+        $expectedGeneratedTags = ['p'];
+        $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
+
+        $config = ContentSanitiser::generateConfig();
+        $expected = [
+            'Core.Encoding' => 'UTF-8',
+            'HTML.AllowedElements' => $expectedGeneratedTags,
+            'HTML.AllowedAttributes' => ['href'],
+            'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
+            'Attr.ID.HTML5' => true
+        ];
+        $this->assertEquals( $expected, $config, "Configuration is not as expected" );
+    }
+
 }
