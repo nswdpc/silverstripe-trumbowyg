@@ -8,7 +8,7 @@ The editor configuration defines a restricted set of tags for saving.
 
 All attributes are removed upon save, except for:
 
-+ the href attribute of the <a> tag
++ the href attribute of the `<a>` tag
 
 Additionally, "javascript:" is removed from the href attribute
 
@@ -16,7 +16,7 @@ Additionally, "javascript:" is removed from the href attribute
 
 By default the following tags are allowed in the editor (see _config/config.yml)
 
-```yaml
+```yml
 - p
 - i
 - blockquote
@@ -37,7 +37,7 @@ By default the following tags are allowed in the editor (see _config/config.yml)
 
 Only the `href` attribute is allowed (for links), with http or https schemes.
 
-If no configuration value `tagsToKeep` is available or it is empty, a default set is used. The fallback condition is to restrict to '<p>' tags only.
+If no configuration value `tagsToKeep` is available or it is empty, a default set is used. The fallback condition is to restrict to `<p>` tags only.
 
 The editor is provided a set of `tagsToRemove` for client-side editing (see _config/config.yml). This configuration is not used in saving the value, as value saving is determined by the `tagsToKeep` only.
 
