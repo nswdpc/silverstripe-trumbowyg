@@ -22,7 +22,7 @@ Please use dedicated upload fields for handling file uploads.
 
 Per [composer.json](/composer.json):
 
-+ silverstripe/framework ^4
++ silverstripe/framework ^4.10.0
 + jQuery 3.6.0
 
 The field pulls in required Trumbowyg JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity (SRI) hashes.
