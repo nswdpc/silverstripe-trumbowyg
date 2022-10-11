@@ -43,27 +43,7 @@ The editor is provided a set of `tagsToRemove` for client-side editing (see _con
 
 ## Options
 
-If no configuration is provided, the following configuration is set:
-
-```php
-$options = [
-    "semantic" => true, // Generates a better, more semantic oriented HTML
-    "removeformatPasted" => true, // remove pasted styles from Word and friends
-    "resetCss" => true, // ref: https://alex-d.github.io/Trumbowyg/documentation/#reset-css
-    "autogrow" => true, // allow the text edit zone to extend
-    "buttons" => [
-        [ "undo", "redo" ],
-        [ "p","h3", "h4", "h5", "strong", "em" ], // basic formatting
-        [ "link", "" ], // support adding <a> links
-        [ "unorderedList", "orderedList" ], // ul and ol
-        [ "removeformat" ], // clear all formatting to assist with removing cruft
-        [ "fullscreen" ] // go full screen edit
-    ],
-    "tagsToKeep" => [
-        "p" //  only keep <p> tags by default
-    ]
-];
-```
+If no configuration is provided, the default configuration defined in [TrumbowygEditorField::getFieldOptions()](../../src/Fields/TrumbowygEditorField.php) is used.
 
 ## Basic example
 
