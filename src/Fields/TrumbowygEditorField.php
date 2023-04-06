@@ -91,9 +91,9 @@ class TrumbowygEditorField extends TextareaField {
             );
         }
         Requirements::javascript(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js",
             [
-                "integrity" => "sha512-t4CFex/T+ioTF5y0QZnCY9r5fkE8bMf9uoNH2HNSwsiTaMQMO0C9KbKPMvwWNdVaEO51nDL3pAzg4ydjWXaqbg==",
+                "integrity" => "sha512-YJgZG+6o3xSc0k5wv774GS+W1gx0vuSI/kr0E0UylL/Qg/noNspPtYwHPN9q6n59CTR/uhgXfjDXLTRI+uIryg==",
                 "crossorigin" => "anonymous"
             ]
         );
@@ -107,10 +107,10 @@ class TrumbowygEditorField extends TextareaField {
             "trumbowyg_editor_" . $this->ID()
         );
         Requirements::css(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css",
+            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css",
             "screen",
             [
-                "integrity" => "sha512-nwpMzLYxfwDnu68Rt9PqLqgVtHkIJxEPrlu3PfTfLQKVgBAlTKDmim1JvCGNyNRtyvCx1nNIVBfYm8UZotWd4Q==",
+                "integrity" => "sha512-Fm8kRNVGCBZn0sPmwJbVXlqfJmPC13zRsMElZenX6v721g/H7OukJd8XzDEBRQ2FSATK8xNF9UYvzsCtUpfeJg==",
                 "crossorigin" => "anonymous"
             ]
         );
