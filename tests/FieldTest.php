@@ -52,7 +52,7 @@ class FieldTest extends SapphireTest {
                 "strike",
             ]
         ];
-        Config::inst()->update(
+        Config::modify()->set(
             TrumboywgEditorField::class,
             'editor_options',
             $options
@@ -104,7 +104,7 @@ HTML;
      */
     public function testGenerateConfig() {
         $tags = "<p><i><u><h2>";
-        Config::inst()->update(
+        Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
             $tags
@@ -129,7 +129,7 @@ HTML;
      */
     public function testEmptyConfig() {
         $tags = "";
-        Config::inst()->update(
+        Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
             $tags
