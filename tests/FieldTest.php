@@ -119,7 +119,9 @@ HTML;
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
-            'Attr.ID.HTML5' => true
+            'Attr.ID.HTML5' => true,
+            'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
+            'AutoFormat.RemoveEmpty' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
     }
@@ -144,7 +146,9 @@ HTML;
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
-            'Attr.ID.HTML5' => true
+            'Attr.ID.HTML5' => true,
+            'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
+            'AutoFormat.RemoveEmpty' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
     }
