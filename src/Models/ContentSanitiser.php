@@ -54,7 +54,9 @@ class ContentSanitiser {
             'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
-            'Attr.ID.HTML5' => true
+            'Attr.ID.HTML5' => true,
+            'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
+            'AutoFormat.RemoveEmpty' => true
         ];
     }
 
@@ -73,6 +75,11 @@ class ContentSanitiser {
             }
             $purifier = new \HTMLPurifier($htmlPurifierConfig);
             $cleaned = $purifier->purify($dirtyHtml);
+            if(trim(strip_tags($cleaned ?? '')) === '') {
+                return '';
+            } else {
+                return $cleaned;
+            }
             return $cleaned;
         } catch (\Exception $e) {
             return htmlentities($dirtyHtml, ENT_QUOTES|ENT_HTML5, "UTF-8");

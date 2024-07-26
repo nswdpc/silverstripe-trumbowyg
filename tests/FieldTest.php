@@ -119,7 +119,9 @@ HTML;
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
-            'Attr.ID.HTML5' => true
+            'Attr.ID.HTML5' => true,
+            'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
+            'AutoFormat.RemoveEmpty' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
     }
@@ -144,9 +146,31 @@ HTML;
             'HTML.AllowedElements' => $expectedGeneratedTags,
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
-            'Attr.ID.HTML5' => true
+            'Attr.ID.HTML5' => true,
+            'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
+            'AutoFormat.RemoveEmpty' => true
         ];
         $this->assertEquals( $expected, $config, "Configuration is not as expected" );
+    }
+
+    /**
+     * test that empty html sent by the library is ignored and treated as empty string
+     */
+    public function testEmptyHtml() {
+        $content = [
+            "<p><br></p>" => "",
+            "<p> <br></p>" => "",
+            "<p>foo</p>" => "<p>foo</p>",
+            "<h1></h1><p>paragraph</p> " => "<p>paragraph</p> ",
+            " " => "",
+            " . " => " . ",
+            "\n\n" => ""
+        ];
+        foreach($content as $in => $expected) {
+            $field = TrumboywgEditorField::create("testEmptyHtml", "test", $in);
+            $out = $field->dataValue();
+            $this->assertEquals($expected, $out);
+        }
     }
 
 }
