@@ -2,6 +2,7 @@
 
 namespace NSWDPC\Utilities\Trumbowyg;
 
+use SilverStripe\Assets\Filesystem;
 use Silverstripe\Core\Config\Configurable;
 use Silverstripe\Core\Config\Config;
 use Silverstripe\ORM\ValidationException;
@@ -49,6 +50,10 @@ class ContentSanitiser {
      * @return array
      */
     public static function generateConfig() : array {
+        $serializerPath = TEMP_PATH . "/HtmlPurifier/Serializer";
+        if(!is_dir($serializerPath)) {
+            Filesystem::makeFolder($serializerPath);
+        }
         return [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
@@ -56,7 +61,9 @@ class ContentSanitiser {
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
-            'AutoFormat.RemoveEmpty' => true
+            'AutoFormat.RemoveEmpty' => true,
+            'Cache.SerializerPath' => $serializerPath,
+            'Cache.SerializerPermissions' => null
         ];
     }
 
