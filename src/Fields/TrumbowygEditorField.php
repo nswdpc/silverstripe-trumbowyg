@@ -84,17 +84,17 @@ class TrumbowygEditorField extends TextareaField {
 
         if($this->config()->get('include_own_jquery')) {
             Requirements::javascript(
-                "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js",
+                "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
                 [
-                    "integrity" => "sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==",
+                    "integrity" => "sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==",
                     "crossorigin" => "anonymous"
                 ]
             );
         }
         Requirements::javascript(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js",
+            "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/trumbowyg.min.js",
             [
-                "integrity" => "sha512-YJgZG+6o3xSc0k5wv774GS+W1gx0vuSI/kr0E0UylL/Qg/noNspPtYwHPN9q6n59CTR/uhgXfjDXLTRI+uIryg==",
+                "integrity" => "sha256-22WtbR/cVHSNiBetApYI0dgQOz/fuKbJ13h0dgAFXCs=",
                 "crossorigin" => "anonymous"
             ]
         );
@@ -108,10 +108,10 @@ class TrumbowygEditorField extends TextareaField {
             "trumbowyg_editor_" . $this->ID()
         );
         Requirements::css(
-            "https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css",
+            "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/ui/trumbowyg.min.css",
             "screen",
             [
-                "integrity" => "sha512-Fm8kRNVGCBZn0sPmwJbVXlqfJmPC13zRsMElZenX6v721g/H7OukJd8XzDEBRQ2FSATK8xNF9UYvzsCtUpfeJg==",
+                "integrity" => "sha256-BmAbHF77DxO8YJPVlYChVGWOah1AU2NMtO9SQj8KI8E=",
                 "crossorigin" => "anonymous"
             ]
         );
