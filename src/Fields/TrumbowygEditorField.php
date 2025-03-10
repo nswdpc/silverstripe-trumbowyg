@@ -28,6 +28,7 @@ class TrumbowygEditorField extends TextareaField {
         if( empty($options) || !is_array($options) ) {
             // Fallback options in case of none configured
             $options = [
+                "fixedBtnPane" => true,
                 "semantic" => true,
                 "removeformatPasted" => true,
                 "resetCss" => true,

@@ -4,6 +4,7 @@ Name: nswdpc-trumbowyg-editor
 NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField:
   # warning: prior to modifying these, read the README.md
   editor_options:
+    fixedBtnPane: true
     semantic: true
     removeformatPasted: true
     resetCss: true

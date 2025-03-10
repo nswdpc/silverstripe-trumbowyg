@@ -21,6 +21,7 @@ class FieldTest extends SapphireTest {
     public function testFieldContentSanitisation() {
 
         $options = [
+            "fixedBtnPane" => true,
             "semantic" => true,
             "removeformatPasted" => true,
             "resetCss" => true,
