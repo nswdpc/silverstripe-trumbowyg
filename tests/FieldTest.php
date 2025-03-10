@@ -115,6 +115,10 @@ HTML;
         $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
+        $this->assertArrayHasKey('Cache.SerializerPath', $config);
+        $this->assertArrayHasKey('Cache.SerializerPermissions', $config);
+        unset($config['Cache.SerializerPath']);
+        unset($config['Cache.SerializerPermissions']);
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
@@ -142,6 +146,10 @@ HTML;
         $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
+        $this->assertArrayHasKey('Cache.SerializerPath', $config);
+        $this->assertArrayHasKey('Cache.SerializerPermissions', $config);
+        unset($config['Cache.SerializerPath']);
+        unset($config['Cache.SerializerPermissions']);
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
