@@ -3,7 +3,7 @@
 namespace NSWDPC\Utilities\Trumbowyg\Tests;
 
 use NSWDPC\Utilities\Trumbowyg\ContentSanitiser;
-use NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField;
+use NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Dev\SapphireTest;
@@ -21,6 +21,7 @@ class FieldTest extends SapphireTest {
     public function testFieldContentSanitisation() {
 
         $options = [
+            "fixedBtnPane" => true,
             "semantic" => true,
             "removeformatPasted" => true,
             "resetCss" => true,
@@ -53,7 +54,7 @@ class FieldTest extends SapphireTest {
             ]
         ];
         Config::modify()->set(
-            TrumboywgEditorField::class,
+            TrumbowygEditorField::class,
             'editor_options',
             $options
         );
@@ -88,7 +89,7 @@ Not allowed header 1
 brokenScript();
 HTML;
 
-        $field = TrumboywgEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
+        $field = TrumbowygEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
 
         // sanitise the value
         $sanitisedValue = $field->dataValue();
@@ -114,6 +115,10 @@ HTML;
         $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
+        $this->assertArrayHasKey('Cache.SerializerPath', $config);
+        $this->assertArrayHasKey('Cache.SerializerPermissions', $config);
+        unset($config['Cache.SerializerPath']);
+        unset($config['Cache.SerializerPermissions']);
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
@@ -141,6 +146,10 @@ HTML;
         $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
+        $this->assertArrayHasKey('Cache.SerializerPath', $config);
+        $this->assertArrayHasKey('Cache.SerializerPermissions', $config);
+        unset($config['Cache.SerializerPath']);
+        unset($config['Cache.SerializerPermissions']);
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
@@ -167,7 +176,7 @@ HTML;
             "\n\n" => ""
         ];
         foreach($content as $in => $expected) {
-            $field = TrumboywgEditorField::create("testEmptyHtml", "test", $in);
+            $field = TrumbowygEditorField::create("testEmptyHtml", "test", $in);
             $out = $field->dataValue();
             $this->assertEquals($expected, $out);
         }
