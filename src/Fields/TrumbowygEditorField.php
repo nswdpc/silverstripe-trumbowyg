@@ -121,7 +121,6 @@ class TrumbowygEditorField extends TextareaField
     /**
      * Return the value, sanitised
      */
-    #[\Override]
     public function Value()
     {
         return $this->dataValue();
