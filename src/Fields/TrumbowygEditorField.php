@@ -13,11 +13,11 @@ use DOMDocument;
 
 class TrumbowygEditorField extends TextareaField {
 
-    private static $casting = [
+    private static array $casting = [
         'Value' => 'HTMLText',
     ];
 
-    private static $include_own_jquery = true;
+    private static bool $include_own_jquery = true;
 
     /**
      * Get field options
@@ -49,15 +49,15 @@ class TrumbowygEditorField extends TextareaField {
                 ]
             ];
         }
+
         $options['tagsToRemove'] = self::getDeniedTags();
         return $options;
     }
 
     /**
      * These tags are denied by default
-     * @return array
      */
-    public static function getDeniedTags() {
+    public static function getDeniedTags(): array {
         return [
             'form',
             'script',
@@ -79,6 +79,7 @@ class TrumbowygEditorField extends TextareaField {
     /**
      * Returns the field
      */
+    #[\Override]
     public function Field($properties = []) {
         $this->setAttribute('data-tw','1');
 
@@ -91,6 +92,7 @@ class TrumbowygEditorField extends TextareaField {
                 ]
             );
         }
+
         Requirements::javascript(
             "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/trumbowyg.min.js",
             [
@@ -121,6 +123,7 @@ class TrumbowygEditorField extends TextareaField {
     /**
      * Return the value, sanitised
      */
+    #[\Override]
     public function Value() {
         return $this->dataValue();
     }
@@ -128,6 +131,7 @@ class TrumbowygEditorField extends TextareaField {
     /**
      * Return cleaned data value
      */
+    #[\Override]
     public function dataValue() {
         $sanitiser = new ContentSanitiser();
         $this->value = $sanitiser->clean($this->value);

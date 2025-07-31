@@ -18,7 +18,7 @@ class FieldTest extends SapphireTest {
     /**
      * Test that the field content is sanitised
      */
-    public function testFieldContentSanitisation() {
+    public function testFieldContentSanitisation(): void {
 
         $options = [
             "fixedBtnPane" => true,
@@ -103,7 +103,7 @@ HTML;
     /**
      * test custom config generation
      */
-    public function testGenerateConfig() {
+    public function testGenerateConfig(): void {
         $tags = "<p><i><u><h2>";
         Config::modify()->set(
             ContentSanitiser::class,
@@ -134,7 +134,7 @@ HTML;
     /**
      * test that only <p> tags are returned
      */
-    public function testEmptyConfig() {
+    public function testEmptyConfig(): void {
         $tags = "";
         Config::modify()->set(
             ContentSanitiser::class,
@@ -165,7 +165,7 @@ HTML;
     /**
      * test that empty html sent by the library is ignored and treated as empty string
      */
-    public function testEmptyHtml() {
+    public function testEmptyHtml(): void {
         $content = [
             "<p><br></p>" => "",
             "<p> <br></p>" => "",
