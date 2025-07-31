@@ -3,13 +3,13 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Assets\Filesystem;
-use Silverstripe\Core\Config\Configurable;
-use Silverstripe\Core\Config\Config;
-use Silverstripe\ORM\ValidationException;
+use SilverStripe\Core\Config\Configurable;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\ValidationException;
 
 /**
  * Sanitise content provided by a trumbowyg field
- * @author James <james@dcs>
+ * @author James
  */
 class ContentSanitiser {
 
@@ -70,10 +70,9 @@ class ContentSanitiser {
     /**
      * Clean dirty HTML using HTML purifier
      * If the purification fails in any way, an entitised version of the HTML is returned
-     * @param string $html
      * @return string
      */
-    public static function clean($dirtyHtml) : string {
+    public static function clean(string $dirtyHtml) : string {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
             $configuration = self::generateConfig();
