@@ -3,7 +3,6 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Forms\TextareaField;
-use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 class TrumbowygEditorField extends TextareaField
