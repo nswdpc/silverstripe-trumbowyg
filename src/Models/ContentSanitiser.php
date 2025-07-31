@@ -5,14 +5,13 @@ namespace NSWDPC\Utilities\Trumbowyg;
 use SilverStripe\Assets\Filesystem;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Sanitise content provided by a trumbowyg field
  * @author James
  */
-class ContentSanitiser {
-
+class ContentSanitiser
+{
     use Configurable;
 
     /**
@@ -27,9 +26,10 @@ class ContentSanitiser {
     /**
      * Return tags suitable for strip_tags
      */
-    public static function getAllowedHTMLTags() : string {
+    public static function getAllowedHTMLTags(): string
+    {
         $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
-        if($allowedHTMLTags == "") {
+        if ($allowedHTMLTags == "") {
             $allowedHTMLTags = "<p>";// disallow all
         }
 
@@ -39,7 +39,8 @@ class ContentSanitiser {
     /**
      * Return tags suitable for strip_tags
      */
-    public static function getAllowedHTMLTagsAsArray() : array {
+    public static function getAllowedHTMLTagsAsArray(): array
+    {
         $allowedHTMLTags = trim(self::getAllowedHTMLTags(), "<>");
         return explode("><", $allowedHTMLTags);
     }
@@ -47,9 +48,10 @@ class ContentSanitiser {
     /**
      * Generate a strict configuration for handling incoming user content
      */
-    public static function generateConfig() : array {
+    public static function generateConfig(): array
+    {
         $serializerPath = TEMP_PATH . "/HtmlPurifier/Serializer";
-        if(!is_dir($serializerPath)) {
+        if (!is_dir($serializerPath)) {
             Filesystem::makeFolder($serializerPath);
         }
 
@@ -70,7 +72,8 @@ class ContentSanitiser {
      * Clean dirty HTML using HTML purifier
      * If the purification fails in any way, an entitised version of the HTML is returned
      */
-    public static function clean(string $dirtyHtml) : string {
+    public static function clean(string $dirtyHtml): string
+    {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
             $configuration = self::generateConfig();
@@ -80,13 +83,13 @@ class ContentSanitiser {
 
             $purifier = new \HTMLPurifier($htmlPurifierConfig);
             $cleaned = $purifier->purify($dirtyHtml);
-            if(trim(strip_tags($cleaned ?? '')) === '') {
+            if (trim(strip_tags($cleaned ?? '')) === '') {
                 return '';
             } else {
                 return $cleaned;
             }
         } catch (\Exception) {
-            return htmlentities($dirtyHtml, ENT_QUOTES|ENT_HTML5, "UTF-8");
+            return htmlentities($dirtyHtml, ENT_QUOTES | ENT_HTML5, "UTF-8");
         }
     }
 }
