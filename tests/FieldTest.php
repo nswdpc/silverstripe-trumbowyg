@@ -173,9 +173,9 @@ HTML;
             "<p><br></p>" => "",
             "<p> <br></p>" => "",
             "<p>foo</p>" => "<p>foo</p>",
-            "<h1></h1><p>paragraph</p> " => "<p>paragraph</p> ",
+            "<h1></h1><p>paragraph</p> " => "<p>paragraph</p>",
             " " => "",
-            " . " => " . ",
+            " . " => ".",
             "\n\n" => ""
         ];
         foreach ($content as $in => $expected) {
