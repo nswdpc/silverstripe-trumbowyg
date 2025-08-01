@@ -86,7 +86,7 @@ class ContentSanitiser
             if (trim(strip_tags($cleaned ?? '')) === '') {
                 return '';
             } else {
-                return $cleaned;
+                return trim($cleaned);
             }
         } catch (\Exception) {
             return htmlentities($dirtyHtml, ENT_QUOTES | ENT_HTML5, "UTF-8");

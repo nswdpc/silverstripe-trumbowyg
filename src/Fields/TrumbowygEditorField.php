@@ -131,8 +131,12 @@ class TrumbowygEditorField extends TextareaField
     #[\Override]
     public function dataValue()
     {
-        $sanitiser = new ContentSanitiser();
-        $this->value = $sanitiser->clean($this->value);
+        $value = $this->value;
+        if (!is_string($value)) {
+            $value = "";
+        }
+
+        $this->value = ContentSanitiser::clean($value);
         return $this->value;
     }
 
