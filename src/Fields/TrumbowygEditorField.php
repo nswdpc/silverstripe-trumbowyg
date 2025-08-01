@@ -137,6 +137,7 @@ class TrumbowygEditorField extends TextareaField
         if(!is_string($value)) {
             $value = "";
         }
+
         $this->value = ContentSanitiser::clean($value);
         return $this->value;
     }
