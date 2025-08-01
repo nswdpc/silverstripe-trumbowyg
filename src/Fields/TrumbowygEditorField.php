@@ -134,7 +134,7 @@ class TrumbowygEditorField extends TextareaField
     public function dataValue()
     {
         $value = $this->value;
-        if(!is_string($value)) {
+        if (!is_string($value)) {
             $value = "";
         }
 
