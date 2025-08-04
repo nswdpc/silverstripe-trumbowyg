@@ -9,7 +9,7 @@ use SilverStripe\View\Requirements;
 class TrumbowygEditorField extends TextareaField
 {
     private static array $casting = [
-        'Value' => 'HTMLText',
+        'Value' => 'HTMLFragment',
     ];
 
     private static bool $include_own_jquery = true;
