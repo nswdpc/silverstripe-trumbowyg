@@ -24,7 +24,7 @@ class ContentSanitiser
         . "<ol><ul><li><a><strike>";
 
     /**
-     * Return tags suitable for strip_tags
+     * Return tags as a string
      */
     public static function getAllowedHTMLTags(): string
     {
@@ -37,7 +37,7 @@ class ContentSanitiser
     }
 
     /**
-     * Return tags suitable for strip_tags
+     * Return tags as an array
      */
     public static function getAllowedHTMLTagsAsArray(): array
     {
@@ -47,17 +47,22 @@ class ContentSanitiser
 
     /**
      * Generate a strict configuration for handling incoming user content
+     * @param array $allowedTags an array of allowed HTML tags e.g. ['p','strong']
      */
-    public static function generateConfig(): array
+    public static function generateConfig(array $allowedTags = []): array
     {
         $serializerPath = TEMP_PATH . "/HtmlPurifier/Serializer";
         if (!is_dir($serializerPath)) {
             Filesystem::makeFolder($serializerPath);
         }
 
+        if($allowedTags === []) {
+            $allowedTags = self::getAllowedHTMLTagsAsArray();
+        }
+
         return [
             'Core.Encoding' => 'UTF-8',
-            'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
+            'HTML.AllowedElements' => $allowedTags,
             'HTML.AllowedAttributes' => ['href'],
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true,
@@ -72,11 +77,11 @@ class ContentSanitiser
      * Clean dirty HTML using HTML purifier
      * If the purification fails in any way, an entitised version of the HTML is returned
      */
-    public static function clean(string $dirtyHtml): string
+    public static function clean(string $dirtyHtml, array $allowedTags = []): string
     {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
-            $configuration = self::generateConfig();
+            $configuration = self::generateConfig($allowedTags);
             foreach ($configuration as $key => $value) {
                 $htmlPurifierConfig->set($key, $value);
             }
@@ -88,7 +93,7 @@ class ContentSanitiser
             } else {
                 return trim($cleaned);
             }
-        } catch (\Exception) {
+        } catch (\Exception $exception) {
             return htmlentities($dirtyHtml, ENT_QUOTES | ENT_HTML5, "UTF-8");
         }
     }

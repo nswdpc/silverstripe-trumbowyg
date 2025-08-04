@@ -23,7 +23,7 @@ class TrumbowygEditorField extends TextareaField
      * Get field options
      * @return array
      */
-    protected function getFieldOptions()
+    protected function getFieldOptions(): array
     {
         $options = $this->config()->get('editor_options');
         if (empty($options) || !is_array($options)) {
@@ -143,7 +143,12 @@ class TrumbowygEditorField extends TextareaField
             $value = "";
         }
 
-        $this->value = ContentSanitiser::clean($value);
+        $options = $this->getFieldOptions();
+        $tagsToKeep = [];
+        if(isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
+            $tagsToKeep = $options['tagsToKeep'];
+        }
+        $this->value = ContentSanitiser::clean($value, $tagsToKeep);
         return $this->value;
     }
 
