@@ -15,6 +15,11 @@ class TrumbowygEditorField extends TextareaField
     private static bool $include_own_jquery = true;
 
     /**
+     * See _config.yml for default editor options
+     */
+    private static array $editor_options = [];
+
+    /**
      * Get field options
      * @return array
      */
