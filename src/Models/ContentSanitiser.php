@@ -3,57 +3,58 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Assets\Filesystem;
-use Silverstripe\Core\Config\Configurable;
-use Silverstripe\Core\Config\Config;
-use Silverstripe\ORM\ValidationException;
+use SilverStripe\Core\Config\Configurable;
+use SilverStripe\Core\Config\Config;
 
 /**
  * Sanitise content provided by a trumbowyg field
- * @author James <james@dcs>
+ * @author James
  */
-class ContentSanitiser {
-
+class ContentSanitiser
+{
     use Configurable;
 
     /**
      * @var string
      * default allowed tags, if none are specified in configuration
      */
-    private static $default_allowed_html_tags = "<p><i><blockquote>"
+    private static string $default_allowed_html_tags = "<p><i><blockquote>"
         . "<b><strong><em><br>"
         . "<h2><h3><h4><h5><h6>"
         . "<ol><ul><li><a><strike>";
 
     /**
      * Return tags suitable for strip_tags
-     * @return string
      */
-    public static function getAllowedHTMLTags() : string {
+    public static function getAllowedHTMLTags(): string
+    {
         $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
-        if($allowedHTMLTags == "") {
+        if ($allowedHTMLTags == "") {
             $allowedHTMLTags = "<p>";// disallow all
         }
+
         return $allowedHTMLTags;
     }
 
     /**
      * Return tags suitable for strip_tags
-     * @return array
      */
-    public static function getAllowedHTMLTagsAsArray() : array {
+    public static function getAllowedHTMLTagsAsArray(): array
+    {
         $allowedHTMLTags = trim(self::getAllowedHTMLTags(), "<>");
         return explode("><", $allowedHTMLTags);
     }
 
     /**
      * Generate a strict configuration for handling incoming user content
-     * @return array
      */
-    public static function generateConfig() : array {
+    public static function generateConfig(): array
+    {
         $serializerPath = TEMP_PATH . "/HtmlPurifier/Serializer";
-        if(!is_dir($serializerPath)) {
+        if (!is_dir($serializerPath)) {
             Filesystem::makeFolder($serializerPath);
         }
+
         return [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
@@ -70,26 +71,25 @@ class ContentSanitiser {
     /**
      * Clean dirty HTML using HTML purifier
      * If the purification fails in any way, an entitised version of the HTML is returned
-     * @param string $html
-     * @return string
      */
-    public static function clean($dirtyHtml) : string {
+    public static function clean(string $dirtyHtml): string
+    {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
             $configuration = self::generateConfig();
             foreach ($configuration as $key => $value) {
                 $htmlPurifierConfig->set($key, $value);
             }
+
             $purifier = new \HTMLPurifier($htmlPurifierConfig);
             $cleaned = $purifier->purify($dirtyHtml);
-            if(trim(strip_tags($cleaned ?? '')) === '') {
+            if (trim(strip_tags($cleaned ?? '')) === '') {
                 return '';
             } else {
-                return $cleaned;
+                return trim($cleaned);
             }
-            return $cleaned;
-        } catch (\Exception $e) {
-            return htmlentities($dirtyHtml, ENT_QUOTES|ENT_HTML5, "UTF-8");
+        } catch (\Exception) {
+            return htmlentities($dirtyHtml, ENT_QUOTES | ENT_HTML5, "UTF-8");
         }
     }
 }

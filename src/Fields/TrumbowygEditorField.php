@@ -2,30 +2,26 @@
 
 namespace NSWDPC\Utilities\Trumbowyg;
 
-use SilverStripe\Core\Convert;
-use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
-use Exception;
-use DOMDocument;
 
-
-class TrumbowygEditorField extends TextareaField {
-
-    private static $casting = [
+class TrumbowygEditorField extends TextareaField
+{
+    private static array $casting = [
         'Value' => 'HTMLText',
     ];
 
-    private static $include_own_jquery = true;
+    private static bool $include_own_jquery = true;
 
     /**
      * Get field options
      * @return array
      */
-    protected function getFieldOptions() {
+    protected function getFieldOptions()
+    {
         $options = $this->config()->get('editor_options');
-        if( empty($options) || !is_array($options) ) {
+        if (empty($options) || !is_array($options)) {
             // Fallback options in case of none configured
             $options = [
                 "fixedBtnPane" => true,
@@ -49,15 +45,16 @@ class TrumbowygEditorField extends TextareaField {
                 ]
             ];
         }
+
         $options['tagsToRemove'] = self::getDeniedTags();
         return $options;
     }
 
     /**
      * These tags are denied by default
-     * @return array
      */
-    public static function getDeniedTags() {
+    public static function getDeniedTags(): array
+    {
         return [
             'form',
             'script',
@@ -79,10 +76,12 @@ class TrumbowygEditorField extends TextareaField {
     /**
      * Returns the field
      */
-    public function Field($properties = []) {
-        $this->setAttribute('data-tw','1');
+    #[\Override]
+    public function Field($properties = [])
+    {
+        $this->setAttribute('data-tw', '1');
 
-        if($this->config()->get('include_own_jquery')) {
+        if ($this->config()->get('include_own_jquery')) {
             Requirements::javascript(
                 "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
                 [
@@ -91,6 +90,7 @@ class TrumbowygEditorField extends TextareaField {
                 ]
             );
         }
+
         Requirements::javascript(
             "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/trumbowyg.min.js",
             [
@@ -101,7 +101,7 @@ class TrumbowygEditorField extends TextareaField {
         // import template with options
         $custom_script = ArrayData::create([
             'ID' => $this->ID(),
-            'Options' => json_encode( $this->getFieldOptions() )
+            'Options' => json_encode($this->getFieldOptions())
         ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
         Requirements::customScript(
             $custom_script,
@@ -121,16 +121,24 @@ class TrumbowygEditorField extends TextareaField {
     /**
      * Return the value, sanitised
      */
-    public function Value() {
+    #[\Override]
+    public function Value()
+    {
         return $this->dataValue();
     }
 
     /**
      * Return cleaned data value
      */
-    public function dataValue() {
-        $sanitiser = new ContentSanitiser();
-        $this->value = $sanitiser->clean($this->value);
+    #[\Override]
+    public function dataValue()
+    {
+        $value = $this->value;
+        if (!is_string($value)) {
+            $value = "";
+        }
+
+        $this->value = ContentSanitiser::clean($value);
         return $this->value;
     }
 

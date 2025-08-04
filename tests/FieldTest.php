@@ -5,11 +5,10 @@ namespace NSWDPC\Utilities\Trumbowyg\Tests;
 use NSWDPC\Utilities\Trumbowyg\ContentSanitiser;
 use NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Dev\SapphireTest;
 
-class FieldTest extends SapphireTest {
-
+class FieldTest extends SapphireTest
+{
     /**
      * @var bool
      */
@@ -18,7 +17,8 @@ class FieldTest extends SapphireTest {
     /**
      * Test that the field content is sanitised
      */
-    public function testFieldContentSanitisation() {
+    public function testFieldContentSanitisation(): void
+    {
 
         $options = [
             "fixedBtnPane" => true,
@@ -103,7 +103,8 @@ HTML;
     /**
      * test custom config generation
      */
-    public function testGenerateConfig() {
+    public function testGenerateConfig(): void
+    {
         $tags = "<p><i><u><h2>";
         Config::modify()->set(
             ContentSanitiser::class,
@@ -112,7 +113,7 @@ HTML;
         );
         $expectedGeneratedTags = ['p','i','u','h2'];
         $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
-        $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
+        $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
         $this->assertArrayHasKey('Cache.SerializerPath', $config);
@@ -128,13 +129,14 @@ HTML;
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
             'AutoFormat.RemoveEmpty' => true
         ];
-        $this->assertEquals( $expected, $config, "Configuration is not as expected" );
+        $this->assertEquals($expected, $config, "Configuration is not as expected");
     }
 
     /**
      * test that only <p> tags are returned
      */
-    public function testEmptyConfig() {
+    public function testEmptyConfig(): void
+    {
         $tags = "";
         Config::modify()->set(
             ContentSanitiser::class,
@@ -143,7 +145,7 @@ HTML;
         );
         $expectedGeneratedTags = ['p'];
         $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
-        $this->assertEquals( $expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
+        $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
         $this->assertArrayHasKey('Cache.SerializerPath', $config);
@@ -159,23 +161,24 @@ HTML;
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
             'AutoFormat.RemoveEmpty' => true
         ];
-        $this->assertEquals( $expected, $config, "Configuration is not as expected" );
+        $this->assertEquals($expected, $config, "Configuration is not as expected");
     }
 
     /**
      * test that empty html sent by the library is ignored and treated as empty string
      */
-    public function testEmptyHtml() {
+    public function testEmptyHtml(): void
+    {
         $content = [
             "<p><br></p>" => "",
             "<p> <br></p>" => "",
             "<p>foo</p>" => "<p>foo</p>",
-            "<h1></h1><p>paragraph</p> " => "<p>paragraph</p> ",
+            "<h1></h1><p>paragraph</p> " => "<p>paragraph</p>",
             " " => "",
-            " . " => " . ",
+            " . " => ".",
             "\n\n" => ""
         ];
-        foreach($content as $in => $expected) {
+        foreach ($content as $in => $expected) {
             $field = TrumbowygEditorField::create("testEmptyHtml", "test", $in);
             $out = $field->dataValue();
             $this->assertEquals($expected, $out);
