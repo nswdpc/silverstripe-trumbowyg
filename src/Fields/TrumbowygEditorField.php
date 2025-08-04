@@ -27,55 +27,25 @@ class TrumbowygEditorField extends TextareaField
     {
         $options = $this->config()->get('editor_options');
         if (empty($options) || !is_array($options)) {
-            // Fallback options in case of none configured
-            $options = [
-                "fixedBtnPane" => true,
-                "semantic" => true,
-                "removeformatPasted" => true,
-                "resetCss" => true,
-                "autogrow" => true,
-                "btns" => [
-                    [ "undo", "redo" ],
-                    [ "p", "h2","h3", "h4", "h5", "strong", "em" ],
-                    [ "link", "" ],
-                    [ "unorderedList", "orderedList" ],
-                    [ "removeformat" ],
-                    [ "fullscreen" ]
-                ],
-                "tagsToKeep" => [
-                    "p",
-                    "i","b", "strong", "em", "br",
-                    "h2","h3","h4","h5","h6",
-                    "ol","ul","li","a"
-                ]
-            ];
+            throw new \InvalidArgumentException("Missing or invalid editor_options configuration");
         }
-
+        $options['tagsToKeep'] = ContentSanitiser::getAllowedHTMLTagsAsArray();
         $options['tagsToRemove'] = self::getDeniedTags();
         return $options;
     }
 
     /**
      * These tags are denied by default
+     *
      */
     public static function getDeniedTags(): array
     {
-        return [
-            'form',
-            'script',
-            'link',
-            'style',
-            'body',
-            'html',
-            'head',
-            'meta',
-            'applet',
-            'object',
-            'iframe',
-            'img',
-            'picture',
-            'video',
-        ];
+        $tags = static::config()->get('tags_to_remove');
+        if(!is_array($tags)) {
+            return [];
+        } else {
+            return $tags;
+        }
     }
 
     /**

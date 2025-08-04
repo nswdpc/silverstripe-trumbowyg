@@ -33,24 +33,6 @@ class FieldTest extends SapphireTest
                 [ "unorderedList", "orderedList" ],
                 [ "removeformat" ],
                 [ "fullscreen" ]
-            ],
-            "tagsToKeep" => [
-                "p",
-                "i",
-                "blockquote",
-                "b",
-                "strong",
-                "em",
-                "br",
-                "h3",
-                "h4",
-                "h5",
-                "h6",
-                "ol",
-                "ul",
-                "li",
-                "a",
-                "strike",
             ]
         ];
         Config::modify()->set(

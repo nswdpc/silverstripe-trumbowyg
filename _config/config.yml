@@ -3,6 +3,8 @@ Name: nswdpc-trumbowyg-editor
 ---
 NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField:
   # warning: prior to modifying these, read the README.md
+  # see ContentSanitiser.default_allowed_html_tags for 'tagsToKeep'
+  # see self.tags_to_remove for 'tagsToRemove'
   editor_options:
     fixedBtnPane: true
     semantic: true
@@ -30,54 +32,36 @@ NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField:
         - removeformat
       -
         - fullscreen
-    # tags to remove from the editor
-    tagsToRemove:
-      - applet
-      - area
-      - base
-      - body
-      - button
-      - details
-      - embed
-      - form
-      - frame
-      - frameset
-      - head
-      - html
-      - iframe
-      - img
-      - input
-      - link
-      - maction
-      - map
-      - math
-      - object
-      - option
-      - picture
-      - script
-      - select
-      - source
-      - style
-      - svg
-      - textarea
-      - video
-      - h1
-      - h2
-    tagsToKeep:
-      - p
-      - i
-      - blockquote
-      - b
-      - strong
-      - em
-      - br
-      - h2
-      - h3
-      - h4
-      - h5
-      - h6
-      - ol
-      - ul
-      - li
-      - a
-      - strike
+  # tags to remove from the editor
+  tags_to_remove:
+    - applet
+    - area
+    - base
+    - body
+    - button
+    - details
+    - embed
+    - form
+    - frame
+    - frameset
+    - head
+    - html
+    - iframe
+    - img
+    - input
+    - link
+    - maction
+    - map
+    - math
+    - object
+    - option
+    - picture
+    - script
+    - select
+    - source
+    - style
+    - svg
+    - textarea
+    - video
+    - h1
+    - h2
