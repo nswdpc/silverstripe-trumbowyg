@@ -60,10 +60,15 @@ class ContentSanitiser
             $allowedTags = self::getAllowedHTMLTagsAsArray();
         }
 
+        $allowedAttributes = [];
+        if(in_array('a', $allowedTags)) {
+            $allowedAttributes = ['href'];
+        }
+
         return [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $allowedTags,
-            'HTML.AllowedAttributes' => ['href'],
+            'HTML.AllowedAttributes' => $allowedAttributes,
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
