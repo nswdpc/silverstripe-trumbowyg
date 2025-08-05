@@ -3,7 +3,6 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Forms\TextareaField;
-use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 class TrumbowygEditorField extends TextareaField
@@ -99,7 +98,7 @@ class TrumbowygEditorField extends TextareaField
             ]
         );
         // import template with options
-        $custom_script = ArrayData::create([
+        $custom_script = \SilverStripe\Model\ArrayData::create([
             'ID' => $this->ID(),
             'Options' => json_encode($this->getFieldOptions())
         ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
@@ -121,7 +120,6 @@ class TrumbowygEditorField extends TextareaField
     /**
      * Return the value, sanitised
      */
-    #[\Override]
     public function Value()
     {
         return $this->dataValue();

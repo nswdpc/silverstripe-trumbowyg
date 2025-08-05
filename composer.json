@@ -32,12 +32,12 @@
         ]
     },
     "require": {
-        "silverstripe/framework" : "^5",
+        "silverstripe/framework" : "^6",
         "ezyang/htmlpurifier" : "^4.17"
     },
     "require-dev": {
         "cambis/silverstripe-rector": "^2",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^11.5",
         "cambis/silverstan": "^2",
         "nswdpc/ci-files": "dev-v-4",
         "friendsofphp/php-cs-fixer": "^3",
