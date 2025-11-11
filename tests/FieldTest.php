@@ -87,14 +87,14 @@ HTML;
      */
     public function testGenerateConfig(): void
     {
-        $tags = "<p><i><u><h2>";
+        $tags = ["p","i","u","h2"];
         Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
             $tags
         );
         $expectedGeneratedTags = ['p','i','u','h2'];
-        $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        $generatedTags = ContentSanitiser::getAllowedHTMLTags();
         $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
@@ -126,7 +126,7 @@ HTML;
             $tags
         );
         $expectedGeneratedTags = ['p'];
-        $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        $generatedTags = ContentSanitiser::getAllowedHTMLTags();
         $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();

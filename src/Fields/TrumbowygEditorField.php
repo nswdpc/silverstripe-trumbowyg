@@ -25,11 +25,14 @@ class TrumbowygEditorField extends TextareaField
      */
     protected function getFieldOptions(): array
     {
-        $options = $this->config()->get('editor_options');
+        // default options
+        $options = static::config()->get('editor_options');
         if (empty($options) || !is_array($options)) {
             throw new \InvalidArgumentException("Missing or invalid editor_options configuration");
         }
-        $options['tagsToKeep'] = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        // keep these tags
+        $options['tagsToKeep'] = ContentSanitiser::getAllowedHTMLTags();
+        // remove these tags from the editor
         $options['tagsToRemove'] = self::getDeniedTags();
         return $options;
     }
@@ -55,8 +58,9 @@ class TrumbowygEditorField extends TextareaField
     public function Field($properties = [])
     {
         $this->setAttribute('data-tw', '1');
+        $this->setAttribute('data-tw-options', json_encode($this->getFieldOptions()));
 
-        if ($this->config()->get('include_own_jquery')) {
+        if (static::config()->get('include_own_jquery')) {
             Requirements::javascript(
                 "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
                 [
@@ -73,15 +77,8 @@ class TrumbowygEditorField extends TextareaField
                 "crossorigin" => "anonymous"
             ]
         );
-        // import template with options
-        $custom_script = ArrayData::create([
-            'ID' => $this->ID(),
-            'Options' => json_encode($this->getFieldOptions())
-        ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
-        Requirements::customScript(
-            $custom_script,
-            "trumbowyg_editor_" . $this->ID()
-        );
+
+        Requirements::javascript("nswdpc/silverstripe-trumbowyg:client/static/js/loader.js");
         Requirements::css(
             "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/ui/trumbowyg.min.css",
             "screen",
@@ -90,6 +87,18 @@ class TrumbowygEditorField extends TextareaField
                 "crossorigin" => "anonymous"
             ]
         );
+
+        // the loader script
+        $trumbowygLoader = <<<JAVASCRIPT
+window.addEventListener(
+    'DOMContentLoaded',
+    function () {
+        let trumbowygLoader = new TrumbowygLoader();
+        trumbowygLoader.handle();
+    }
+);
+JAVASCRIPT;
+        Requirements::customScript($trumbowygLoader, "trumbowygLoader");
         return parent::Field($properties);
     }
 
@@ -113,6 +122,7 @@ class TrumbowygEditorField extends TextareaField
             $value = "";
         }
 
+        // Sanitise values, using the configured tagsToKeep setting
         $options = $this->getFieldOptions();
         $tagsToKeep = [];
         if(isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {

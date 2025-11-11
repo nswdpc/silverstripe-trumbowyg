@@ -18,31 +18,24 @@ class ContentSanitiser
      * @var string
      * default allowed tags, if none are specified in configuration
      */
-    private static string $default_allowed_html_tags = "<p><i><blockquote>"
-        . "<b><strong><em><br>"
-        . "<h2><h3><h4><h5><h6>"
-        . "<ol><ul><li><a><strike>";
+    private static array $default_allowed_html_tags = [
+        "p", "i", "blockquote",
+        "b", "strong", "em", "br",
+        "h2", "h3", "h4", "h5", "h6",
+        "ol", "ul", "li",
+        "a", "strike"
+    ];
 
     /**
-     * Return tags as a string
+     * Return tags as an array, or a default tag if empty
      */
-    public static function getAllowedHTMLTags(): string
+    public static function getAllowedHTMLTags(): array
     {
-        $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
+        $allowedHTMLTags = static::config()->get('default_allowed_html_tags');
         if ($allowedHTMLTags == "") {
-            $allowedHTMLTags = "<p>";// disallow all
+            $allowedHTMLTags = ["p"];// disallow all except p
         }
-
         return $allowedHTMLTags;
-    }
-
-    /**
-     * Return tags as an array
-     */
-    public static function getAllowedHTMLTagsAsArray(): array
-    {
-        $allowedHTMLTags = trim(self::getAllowedHTMLTags(), "<>");
-        return explode("><", $allowedHTMLTags);
     }
 
     /**
@@ -57,10 +50,11 @@ class ContentSanitiser
         }
 
         if($allowedTags === []) {
-            $allowedTags = self::getAllowedHTMLTagsAsArray();
+            $allowedTags = static::getAllowedHTMLTags();
         }
 
         $allowedAttributes = [];
+        // if 'a' is an allowed tag, allow href
         if(in_array('a', $allowedTags)) {
             $allowedAttributes = ['href'];
         }

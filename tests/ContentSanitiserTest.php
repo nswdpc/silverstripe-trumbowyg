@@ -23,7 +23,7 @@ class ContentSanitiserTest extends SapphireTest
         Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
-            '<a><p><ol><ul><li>'
+            ['a','p','ol','ul','li']
         );
 
         $html = <<<HTML
