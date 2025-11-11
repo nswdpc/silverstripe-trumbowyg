@@ -56,7 +56,7 @@ class ContentSanitiser
         $allowedAttributes = [];
         // if 'a' is an allowed tag, allow href
         if(in_array('a', $allowedTags)) {
-            $allowedAttributes = ['href'];
+            $allowedAttributes = ['a.href'];
         }
 
         return [
