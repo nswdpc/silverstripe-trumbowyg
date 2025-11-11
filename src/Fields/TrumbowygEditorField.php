@@ -120,6 +120,13 @@ JAVASCRIPT;
         $value = $this->value;
         if (!is_string($value)) {
             $value = "";
+        } else {
+            $value = trim($value);
+        }
+
+        // Handle empty
+        if($value === '') {
+            return '';
         }
 
         // Sanitise values, using the configured tagsToKeep setting
