@@ -87,13 +87,13 @@ HTML;
      */
     public function testGenerateConfig(): void
     {
-        $tags = ["p","i","u","h2"];
+        $tags = ["p","i","u","h2","a"];
         Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
             $tags
         );
-        $expectedGeneratedTags = ['p','i','u','h2'];
+        $expectedGeneratedTags = ['p','i','u','h2','a'];
         $generatedTags = ContentSanitiser::getAllowedHTMLTags();
         $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
@@ -105,7 +105,7 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => ['ol.style','li.style','ul.style'],
+            'HTML.AllowedAttributes' => ['a.href','ol.style','li.style','ul.style'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
