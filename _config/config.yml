@@ -9,7 +9,7 @@ NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField:
     fixedBtnPane: true
     semantic: true
     removeformatPasted: false
-    resetCss: true
+    resetCss: false
     autogrow: true
     btns:
       -
