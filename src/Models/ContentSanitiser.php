@@ -58,6 +58,10 @@ class ContentSanitiser
         if(in_array('a', $allowedTags)) {
             $allowedAttributes = ['a.href'];
         }
+        // allow list styling
+        $allowedAttributes[] = "ol.style";
+        $allowedAttributes[] = "li.style";
+        $allowedAttributes[] = "ul.style";
 
         return [
             'Core.Encoding' => 'UTF-8',

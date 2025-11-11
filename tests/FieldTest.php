@@ -105,7 +105,7 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => [],
+            'HTML.AllowedAttributes' => ['ol.style','li.style','ul.style'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -137,7 +137,7 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => [],
+            'HTML.AllowedAttributes' => ['ol.style','li.style','ul.style'],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
