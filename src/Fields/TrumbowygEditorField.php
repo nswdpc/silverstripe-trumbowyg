@@ -52,6 +52,15 @@ class TrumbowygEditorField extends TextareaField
     }
 
     /**
+     * Add requirements for plugins
+     * Use Injector to provide a custom implementation of this field with plugins
+     */
+    protected function addTrumbowygPluginRequirements(): void
+    {
+        // NOOP
+    }
+
+    /**
      * Returns the field
      */
     #[\Override]
@@ -79,6 +88,7 @@ class TrumbowygEditorField extends TextareaField
         );
 
         Requirements::javascript("nswdpc/silverstripe-trumbowyg:client/static/js/loader.js");
+
         Requirements::css(
             "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/ui/trumbowyg.min.css",
             "screen",
@@ -87,6 +97,9 @@ class TrumbowygEditorField extends TextareaField
                 "crossorigin" => "anonymous"
             ]
         );
+
+        // add any plugins
+        $this->addTrumbowygPluginRequirements();
 
         // the loader script
         $trumbowygLoader = <<<JAVASCRIPT
