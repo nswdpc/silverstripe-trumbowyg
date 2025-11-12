@@ -91,7 +91,7 @@ class ContentSanitiser
         $allowedAttributes = static::getAllowedAttributes();
         // if 'a' is an allowed tag, allow href
         if (in_array('a', $allowedTags)) {
-            $allowedAttributes = ['a.href'];
+            $allowedAttributes[] = 'a.href';
         }
 
         $allowedCssProperties = static::getAllowedCssProperties();
