@@ -20,7 +20,7 @@ Only the `href` attribute is allowed (for `a`), with http or https schemes.
 
 If no configuration value `tagsToKeep` is available or it is empty, a default set is used. The fallback condition is to restrict to `<p>` tags only.
 
-The editor is provided a set of `tagsToRemove` for client-side editing [in config.yml](../../s_config/config.yml). This configuration is not used in saving the value, as value saving is determined by the `tagsToKeep` only.
+The editor is provided a set of `tagsToRemove` for client-side editing [in config.yml](../../_config/config.yml). This configuration is not used in saving the value, as value saving is determined by the `tagsToKeep` only.
 
 ## Options
 
