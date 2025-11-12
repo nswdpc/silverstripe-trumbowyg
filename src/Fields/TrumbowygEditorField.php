@@ -3,7 +3,6 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Forms\TextareaField;
-use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 class TrumbowygEditorField extends TextareaField
@@ -44,7 +43,7 @@ class TrumbowygEditorField extends TextareaField
     public static function getDeniedTags(): array
     {
         $tags = static::config()->get('tags_to_remove');
-        if(!is_array($tags)) {
+        if (!is_array($tags)) {
             return [];
         } else {
             return $tags;
@@ -134,14 +133,14 @@ JAVASCRIPT;
         $value = is_string($value) ? trim($value) : "";
 
         // Handle empty
-        if($value === '') {
+        if ($value === '') {
             return '';
         }
 
         // Sanitise values, using the configured tagsToKeep setting
         $options = $this->getFieldOptions();
         $tagsToKeep = [];
-        if(isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
+        if (isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
             $tagsToKeep = $options['tagsToKeep'];
         }
 

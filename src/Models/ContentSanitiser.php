@@ -4,7 +4,6 @@ namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Assets\Filesystem;
 use SilverStripe\Core\Config\Configurable;
-use SilverStripe\Core\Config\Config;
 
 /**
  * Sanitise content provided by a trumbowyg field
@@ -54,7 +53,7 @@ class ContentSanitiser
     public static function getAllowedAttributes(): array
     {
         $allowedAttributes = static::config()->get('default_allowed_attributes');
-        if(!is_array($allowedAttributes)) {
+        if (!is_array($allowedAttributes)) {
             return [];
         } else {
             return $allowedAttributes;
@@ -67,7 +66,7 @@ class ContentSanitiser
     public static function getAllowedCssProperties(): array
     {
         $allowedCssProperties = static::config()->get('default_allowed_css_properties');
-        if(!is_array($allowedCssProperties)) {
+        if (!is_array($allowedCssProperties)) {
             return [];
         } else {
             return $allowedCssProperties;
@@ -85,13 +84,13 @@ class ContentSanitiser
             Filesystem::makeFolder($serializerPath);
         }
 
-        if($allowedTags === []) {
+        if ($allowedTags === []) {
             $allowedTags = static::getAllowedHTMLTags();
         }
 
         $allowedAttributes = static::getAllowedAttributes();
         // if 'a' is an allowed tag, allow href
-        if(in_array('a', $allowedTags)) {
+        if (in_array('a', $allowedTags)) {
             $allowedAttributes = ['a.href'];
         }
 

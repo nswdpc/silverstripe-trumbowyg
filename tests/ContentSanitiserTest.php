@@ -3,7 +3,6 @@
 namespace NSWDPC\Utilities\Trumbowyg\Tests;
 
 use NSWDPC\Utilities\Trumbowyg\ContentSanitiser;
-use NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 
