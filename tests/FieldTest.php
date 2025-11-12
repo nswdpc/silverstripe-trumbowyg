@@ -14,6 +14,25 @@ class FieldTest extends SapphireTest
      */
     protected $usesDatabase = false;
 
+    protected function setUp(): void
+    {
+
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_attributes',
+            []
+        );
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_css_properties',
+            []
+        );
+
+        parent::setUp();
+    }
+
     /**
      * Test that the field content is sanitised
      */
@@ -71,7 +90,7 @@ Not allowed header 1
 brokenScript();
 HTML;
 
-        $field = TrumbowygEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
+        $field = new TrumbowygEditorField("testFieldContentSanitisation", "test", $dirtyHtml);
 
         // sanitise the value
         $sanitisedValue = $field->dataValue();
@@ -105,7 +124,8 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => ['a.href','ol.style','li.style','ul.style'],
+            'HTML.AllowedAttributes' => ['a.href'],
+            'CSS.AllowedProperties' => [],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -137,7 +157,8 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => ['ol.style','li.style','ul.style'],
+            'HTML.AllowedAttributes' => [],
+            'CSS.AllowedProperties' => [],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -161,7 +182,7 @@ HTML;
             "\n\n" => ""
         ];
         foreach ($content as $in => $expected) {
-            $field = TrumbowygEditorField::create("testEmptyHtml", "test", $in);
+            $field = new TrumbowygEditorField("testEmptyHtml", "test", $in);
             $out = $field->dataValue();
             $this->assertEquals($expected, $out);
         }

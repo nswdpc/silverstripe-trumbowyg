@@ -15,8 +15,7 @@ class ContentSanitiser
     use Configurable;
 
     /**
-     * @var string
-     * default allowed tags, if none are specified in configuration
+     * Default allowed tags, if none are specified in configuration
      */
     private static array $default_allowed_html_tags = [
         "p", "i", "blockquote",
@@ -25,6 +24,16 @@ class ContentSanitiser
         "ol", "ul", "li",
         "a", "strike"
     ];
+
+    /**
+     * Allowed attributes
+     */
+    private static array $default_allowed_attributes = [];
+
+    /**
+     * Allowed CSS properties
+     */
+    private static array $default_allowed_css_properties = [];
 
     /**
      * Return tags as an array, or a default tag if empty
@@ -36,6 +45,32 @@ class ContentSanitiser
             $allowedHTMLTags = ["p"];// disallow all except p
         }
         return $allowedHTMLTags;
+    }
+
+    /**
+     * Return allowed attributes from configuration
+     */
+    public static function getAllowedAttributes(): array
+    {
+        $allowedAttributes = static::config()->get('default_allowed_attributes');
+        if(!is_array($allowedAttributes)) {
+            return [];
+        } else {
+            return $allowedAttributes;
+        }
+    }
+
+    /**
+     * Return allowed CSS properties from configuration
+     */
+    public static function getAllowedCssProperties(): array
+    {
+        $allowedCssProperties = static::config()->get('default_allowed_css_properties');
+        if(!is_array($allowedCssProperties)) {
+            return [];
+        } else {
+            return $allowedCssProperties;
+        }
     }
 
     /**
@@ -53,20 +88,19 @@ class ContentSanitiser
             $allowedTags = static::getAllowedHTMLTags();
         }
 
-        $allowedAttributes = [];
+        $allowedAttributes = static::getAllowedAttributes();
         // if 'a' is an allowed tag, allow href
         if(in_array('a', $allowedTags)) {
             $allowedAttributes = ['a.href'];
         }
-        // allow list styling
-        $allowedAttributes[] = "ol.style";
-        $allowedAttributes[] = "li.style";
-        $allowedAttributes[] = "ul.style";
+
+        $allowedCssProperties = static::getAllowedCssProperties();
 
         return [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $allowedTags,
             'HTML.AllowedAttributes' => $allowedAttributes,
+            'CSS.AllowedProperties' => $allowedCssProperties,
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,

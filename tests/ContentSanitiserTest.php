@@ -26,6 +26,18 @@ class ContentSanitiserTest extends SapphireTest
             ['a','p','ol','ul','li']
         );
 
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_attributes',
+            []
+        );
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_css_properties',
+            []
+        );
+
         $html = <<<HTML
 <h1>Not allowed header 1</h1>
 <h4>Header 4</h4>
@@ -70,7 +82,19 @@ HTML;
         Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
-            ''
+            []
+        );
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_attributes',
+            []
+        );
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_css_properties',
+            []
         );
 
         $html = <<<HTML
