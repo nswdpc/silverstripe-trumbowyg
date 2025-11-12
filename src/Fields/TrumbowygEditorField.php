@@ -21,7 +21,6 @@ class TrumbowygEditorField extends TextareaField
 
     /**
      * Get field options
-     * @return array
      */
     protected function getFieldOptions(): array
     {
@@ -30,6 +29,7 @@ class TrumbowygEditorField extends TextareaField
         if (empty($options) || !is_array($options)) {
             throw new \InvalidArgumentException("Missing or invalid editor_options configuration");
         }
+
         // keep these tags
         $options['tagsToKeep'] = ContentSanitiser::getAllowedHTMLTags();
         // remove these tags from the editor
@@ -131,11 +131,7 @@ JAVASCRIPT;
     public function dataValue()
     {
         $value = $this->value;
-        if (!is_string($value)) {
-            $value = "";
-        } else {
-            $value = trim($value);
-        }
+        $value = is_string($value) ? trim($value) : "";
 
         // Handle empty
         if($value === '') {
@@ -148,6 +144,7 @@ JAVASCRIPT;
         if(isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
             $tagsToKeep = $options['tagsToKeep'];
         }
+
         $this->value = ContentSanitiser::clean($value, $tagsToKeep);
         return $this->value;
     }

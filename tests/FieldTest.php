@@ -14,6 +14,7 @@ class FieldTest extends SapphireTest
      */
     protected $usesDatabase = false;
 
+    #[\Override]
     protected function setUp(): void
     {
 
@@ -90,7 +91,7 @@ Not allowed header 1
 brokenScript();
 HTML;
 
-        $field = new TrumbowygEditorField("testFieldContentSanitisation", "test", $dirtyHtml);
+        $field = \NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
 
         // sanitise the value
         $sanitisedValue = $field->dataValue();
@@ -182,7 +183,7 @@ HTML;
             "\n\n" => ""
         ];
         foreach ($content as $in => $expected) {
-            $field = new TrumbowygEditorField("testEmptyHtml", "test", $in);
+            $field = \NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField::create("testEmptyHtml", "test", $in);
             $out = $field->dataValue();
             $this->assertEquals($expected, $out);
         }

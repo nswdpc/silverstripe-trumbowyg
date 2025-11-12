@@ -44,6 +44,7 @@ class ContentSanitiser
         if ($allowedHTMLTags == "") {
             $allowedHTMLTags = ["p"];// disallow all except p
         }
+
         return $allowedHTMLTags;
     }
 
@@ -130,7 +131,7 @@ class ContentSanitiser
             } else {
                 return trim($cleaned);
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return htmlentities($dirtyHtml, ENT_QUOTES | ENT_HTML5, "UTF-8");
         }
     }
