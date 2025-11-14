@@ -14,36 +14,17 @@ Additionally, "javascript:" is removed from the href attribute
 
 ## Tag restrictions
 
-By default the following tags are allowed in the editor (see _config/config.yml)
+See [config.yml](../../_config/config.yml) for the current list of tags allowed
 
-```yml
-- p
-- i
-- blockquote
-- b
-- strong
-- em
-- br
-- h3
-- h4
-- h5
-- h6
-- ol
-- ul
-- li
-- a
-- strike
-```
-
-Only the `href` attribute is allowed (for links), with http or https schemes.
+Only the `href` attribute is allowed (for `a`), with http or https schemes.
 
 If no configuration value `tagsToKeep` is available or it is empty, a default set is used. The fallback condition is to restrict to `<p>` tags only.
 
-The editor is provided a set of `tagsToRemove` for client-side editing (see _config/config.yml). This configuration is not used in saving the value, as value saving is determined by the `tagsToKeep` only.
+The editor is provided a set of `tagsToRemove` for client-side editing [in config.yml](../../_config/config.yml). This configuration is not used in saving the value, as value saving is determined by the `tagsToKeep` only.
 
 ## Options
 
-If no configuration is provided, the default configuration defined in [TrumbowygEditorField::getFieldOptions()](../../src/Fields/TrumbowygEditorField.php) is used.
+If no editor configuration is provided, an `InvalidArgumentException` is thrown.
 
 ## Basic example
 

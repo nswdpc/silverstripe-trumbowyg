@@ -14,6 +14,26 @@ class FieldTest extends SapphireTest
      */
     protected $usesDatabase = false;
 
+    #[\Override]
+    protected function setUp(): void
+    {
+
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_attributes',
+            []
+        );
+
+        Config::modify()->set(
+            ContentSanitiser::class,
+            'default_allowed_css_properties',
+            []
+        );
+
+        parent::setUp();
+    }
+
     /**
      * Test that the field content is sanitised
      */
@@ -33,24 +53,6 @@ class FieldTest extends SapphireTest
                 [ "unorderedList", "orderedList" ],
                 [ "removeformat" ],
                 [ "fullscreen" ]
-            ],
-            "tagsToKeep" => [
-                "p",
-                "i",
-                "blockquote",
-                "b",
-                "strong",
-                "em",
-                "br",
-                "h3",
-                "h4",
-                "h5",
-                "h6",
-                "ol",
-                "ul",
-                "li",
-                "a",
-                "strike",
             ]
         ];
         Config::modify()->set(
@@ -89,7 +91,7 @@ Not allowed header 1
 brokenScript();
 HTML;
 
-        $field = TrumbowygEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
+        $field = \NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField::create("testFieldContentSanitisation", "test", $dirtyHtml);
 
         // sanitise the value
         $sanitisedValue = $field->dataValue();
@@ -105,14 +107,14 @@ HTML;
      */
     public function testGenerateConfig(): void
     {
-        $tags = "<p><i><u><h2>";
+        $tags = ["p","i","u","h2","a"];
         Config::modify()->set(
             ContentSanitiser::class,
             'default_allowed_html_tags',
             $tags
         );
-        $expectedGeneratedTags = ['p','i','u','h2'];
-        $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        $expectedGeneratedTags = ['p','i','u','h2','a'];
+        $generatedTags = ContentSanitiser::getAllowedHTMLTags();
         $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
@@ -123,7 +125,8 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => ['href'],
+            'HTML.AllowedAttributes' => ['a.href'],
+            'CSS.AllowedProperties' => [],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -144,7 +147,7 @@ HTML;
             $tags
         );
         $expectedGeneratedTags = ['p'];
-        $generatedTags = ContentSanitiser::getAllowedHTMLTagsAsArray();
+        $generatedTags = ContentSanitiser::getAllowedHTMLTags();
         $this->assertEquals($expectedGeneratedTags, $generatedTags, "Generated tags should match expected");
 
         $config = ContentSanitiser::generateConfig();
@@ -155,7 +158,8 @@ HTML;
         $expected = [
             'Core.Encoding' => 'UTF-8',
             'HTML.AllowedElements' => $expectedGeneratedTags,
-            'HTML.AllowedAttributes' => ['href'],
+            'HTML.AllowedAttributes' => [],
+            'CSS.AllowedProperties' => [],
             'URI.AllowedSchemes' => ['http','https', 'mailto', 'callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -179,7 +183,7 @@ HTML;
             "\n\n" => ""
         ];
         foreach ($content as $in => $expected) {
-            $field = TrumbowygEditorField::create("testEmptyHtml", "test", $in);
+            $field = \NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField::create("testEmptyHtml", "test", $in);
             $out = $field->dataValue();
             $this->assertEquals($expected, $out);
         }

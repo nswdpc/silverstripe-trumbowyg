@@ -4,7 +4,6 @@ namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Assets\Filesystem;
 use SilverStripe\Core\Config\Configurable;
-use SilverStripe\Core\Config\Config;
 
 /**
  * Sanitise content provided by a trumbowyg field
@@ -15,50 +14,93 @@ class ContentSanitiser
     use Configurable;
 
     /**
-     * @var string
-     * default allowed tags, if none are specified in configuration
+     * Default allowed tags, if none are specified in configuration
      */
-    private static string $default_allowed_html_tags = "<p><i><blockquote>"
-        . "<b><strong><em><br>"
-        . "<h2><h3><h4><h5><h6>"
-        . "<ol><ul><li><a><strike>";
+    private static array $default_allowed_html_tags = [
+        "p", "i", "blockquote",
+        "b", "strong", "em", "br",
+        "h2", "h3", "h4", "h5", "h6",
+        "ol", "ul", "li",
+        "a", "strike"
+    ];
 
     /**
-     * Return tags suitable for strip_tags
+     * Allowed attributes
      */
-    public static function getAllowedHTMLTags(): string
+    private static array $default_allowed_attributes = [];
+
+    /**
+     * Allowed CSS properties
+     */
+    private static array $default_allowed_css_properties = [];
+
+    /**
+     * Return tags as an array, or a default tag if empty
+     */
+    public static function getAllowedHTMLTags(): array
     {
-        $allowedHTMLTags = Config::inst()->get(self::class, 'default_allowed_html_tags');
+        $allowedHTMLTags = static::config()->get('default_allowed_html_tags');
         if ($allowedHTMLTags == "") {
-            $allowedHTMLTags = "<p>";// disallow all
+            $allowedHTMLTags = ["p"];// disallow all except p
         }
 
         return $allowedHTMLTags;
     }
 
     /**
-     * Return tags suitable for strip_tags
+     * Return allowed attributes from configuration
      */
-    public static function getAllowedHTMLTagsAsArray(): array
+    public static function getAllowedAttributes(): array
     {
-        $allowedHTMLTags = trim(self::getAllowedHTMLTags(), "<>");
-        return explode("><", $allowedHTMLTags);
+        $allowedAttributes = static::config()->get('default_allowed_attributes');
+        if (!is_array($allowedAttributes)) {
+            return [];
+        } else {
+            return $allowedAttributes;
+        }
+    }
+
+    /**
+     * Return allowed CSS properties from configuration
+     */
+    public static function getAllowedCssProperties(): array
+    {
+        $allowedCssProperties = static::config()->get('default_allowed_css_properties');
+        if (!is_array($allowedCssProperties)) {
+            return [];
+        } else {
+            return $allowedCssProperties;
+        }
     }
 
     /**
      * Generate a strict configuration for handling incoming user content
+     * @param array $allowedTags an array of allowed HTML tags e.g. ['p','strong']
      */
-    public static function generateConfig(): array
+    public static function generateConfig(array $allowedTags = []): array
     {
         $serializerPath = TEMP_PATH . "/HtmlPurifier/Serializer";
         if (!is_dir($serializerPath)) {
             Filesystem::makeFolder($serializerPath);
         }
 
+        if ($allowedTags === []) {
+            $allowedTags = static::getAllowedHTMLTags();
+        }
+
+        $allowedAttributes = static::getAllowedAttributes();
+        // if 'a' is an allowed tag, allow href
+        if (in_array('a', $allowedTags)) {
+            $allowedAttributes[] = 'a.href';
+        }
+
+        $allowedCssProperties = static::getAllowedCssProperties();
+
         return [
             'Core.Encoding' => 'UTF-8',
-            'HTML.AllowedElements' => self::getAllowedHTMLTagsAsArray(),
-            'HTML.AllowedAttributes' => ['href'],
+            'HTML.AllowedElements' => $allowedTags,
+            'HTML.AllowedAttributes' => $allowedAttributes,
+            'CSS.AllowedProperties' => $allowedCssProperties,
             'URI.AllowedSchemes' => ['http','https','mailto','callto'],
             'Attr.ID.HTML5' => true,
             'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
@@ -72,11 +114,11 @@ class ContentSanitiser
      * Clean dirty HTML using HTML purifier
      * If the purification fails in any way, an entitised version of the HTML is returned
      */
-    public static function clean(string $dirtyHtml): string
+    public static function clean(string $dirtyHtml, array $allowedTags = []): string
     {
         try {
             $htmlPurifierConfig = \HTMLPurifier_Config::createDefault();
-            $configuration = self::generateConfig();
+            $configuration = self::generateConfig($allowedTags);
             foreach ($configuration as $key => $value) {
                 $htmlPurifierConfig->set($key, $value);
             }

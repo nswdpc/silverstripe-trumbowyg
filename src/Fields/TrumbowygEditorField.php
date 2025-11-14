@@ -3,74 +3,60 @@
 namespace NSWDPC\Utilities\Trumbowyg;
 
 use SilverStripe\Forms\TextareaField;
-use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 class TrumbowygEditorField extends TextareaField
 {
     private static array $casting = [
-        'Value' => 'HTMLText',
+        'Value' => 'HTMLFragment',
     ];
 
     private static bool $include_own_jquery = true;
 
     /**
-     * Get field options
-     * @return array
+     * See _config.yml for default editor options
      */
-    protected function getFieldOptions()
+    private static array $editor_options = [];
+
+    /**
+     * Get field options
+     */
+    protected function getFieldOptions(): array
     {
-        $options = $this->config()->get('editor_options');
+        // default options
+        $options = static::config()->get('editor_options');
         if (empty($options) || !is_array($options)) {
-            // Fallback options in case of none configured
-            $options = [
-                "fixedBtnPane" => true,
-                "semantic" => true,
-                "removeformatPasted" => true,
-                "resetCss" => true,
-                "autogrow" => true,
-                "btns" => [
-                    [ "undo", "redo" ],
-                    [ "p", "h2","h3", "h4", "h5", "strong", "em" ],
-                    [ "link", "" ],
-                    [ "unorderedList", "orderedList" ],
-                    [ "removeformat" ],
-                    [ "fullscreen" ]
-                ],
-                "tagsToKeep" => [
-                    "p",
-                    "i","b", "strong", "em", "br",
-                    "h2","h3","h4","h5","h6",
-                    "ol","ul","li","a"
-                ]
-            ];
+            throw new \InvalidArgumentException("Missing or invalid editor_options configuration");
         }
 
+        // keep these tags
+        $options['tagsToKeep'] = ContentSanitiser::getAllowedHTMLTags();
+        // remove these tags from the editor
         $options['tagsToRemove'] = self::getDeniedTags();
         return $options;
     }
 
     /**
      * These tags are denied by default
+     *
      */
     public static function getDeniedTags(): array
     {
-        return [
-            'form',
-            'script',
-            'link',
-            'style',
-            'body',
-            'html',
-            'head',
-            'meta',
-            'applet',
-            'object',
-            'iframe',
-            'img',
-            'picture',
-            'video',
-        ];
+        $tags = static::config()->get('tags_to_remove');
+        if (!is_array($tags)) {
+            return [];
+        } else {
+            return $tags;
+        }
+    }
+
+    /**
+     * Add requirements for plugins
+     * Use Injector to provide a custom implementation of this field with plugins
+     */
+    protected function addTrumbowygPluginRequirements(): void
+    {
+        // NOOP
     }
 
     /**
@@ -80,8 +66,9 @@ class TrumbowygEditorField extends TextareaField
     public function Field($properties = [])
     {
         $this->setAttribute('data-tw', '1');
+        $this->setAttribute('data-tw-options', json_encode($this->getFieldOptions()));
 
-        if ($this->config()->get('include_own_jquery')) {
+        if (static::config()->get('include_own_jquery')) {
             Requirements::javascript(
                 "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
                 [
@@ -98,15 +85,9 @@ class TrumbowygEditorField extends TextareaField
                 "crossorigin" => "anonymous"
             ]
         );
-        // import template with options
-        $custom_script = ArrayData::create([
-            'ID' => $this->ID(),
-            'Options' => json_encode($this->getFieldOptions())
-        ])->renderWith('NSWDPC/Utilities/Trumbowyg/Script');
-        Requirements::customScript(
-            $custom_script,
-            "trumbowyg_editor_" . $this->ID()
-        );
+
+        Requirements::javascript("nswdpc/silverstripe-trumbowyg:client/static/js/loader.js");
+
         Requirements::css(
             "https://cdn.jsdelivr.net/npm/trumbowyg@2.31.0/dist/ui/trumbowyg.min.css",
             "screen",
@@ -115,6 +96,21 @@ class TrumbowygEditorField extends TextareaField
                 "crossorigin" => "anonymous"
             ]
         );
+
+        // add any plugins
+        $this->addTrumbowygPluginRequirements();
+
+        // the loader script
+        $trumbowygLoader = <<<JAVASCRIPT
+window.addEventListener(
+    'DOMContentLoaded',
+    function () {
+        let trumbowygLoader = new TrumbowygLoader();
+        trumbowygLoader.handle();
+    }
+);
+JAVASCRIPT;
+        Requirements::customScript($trumbowygLoader, "trumbowygLoader");
         return parent::Field($properties);
     }
 
@@ -134,11 +130,21 @@ class TrumbowygEditorField extends TextareaField
     public function dataValue()
     {
         $value = $this->value;
-        if (!is_string($value)) {
-            $value = "";
+        $value = is_string($value) ? trim($value) : "";
+
+        // Handle empty
+        if ($value === '') {
+            return '';
         }
 
-        $this->value = ContentSanitiser::clean($value);
+        // Sanitise values, using the configured tagsToKeep setting
+        $options = $this->getFieldOptions();
+        $tagsToKeep = [];
+        if (isset($options['tagsToKeep']) && is_array($options['tagsToKeep'])) {
+            $tagsToKeep = $options['tagsToKeep'];
+        }
+
+        $this->value = ContentSanitiser::clean($value, $tagsToKeep);
         return $this->value;
     }
 
