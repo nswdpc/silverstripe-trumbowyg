@@ -22,10 +22,10 @@ Please use dedicated upload fields for handling file uploads.
 
 Per [composer.json](/composer.json):
 
-+ silverstripe/framework ^4.10.0
-+ jQuery 3.6.0
++ silverstripe/framework ^5
++ jQuery 3.7
 
-The field pulls in required Trumbowyg JS and CSS assets from [cdnjs.com](https://cdnjs.com) along with their respective Sub Resource Integrity (SRI) hashes.
+The field pulls in required Trumbowyg JS and CSS assets from `cdn.jsdelivr.net` along with their respective Sub Resource Integrity (SRI) hashes.
 
 If you wish to use your own jQuery, set the  `TrumboywgEditorField.use_own_jquery` configuration value to `false` in your project configuration. When false, the module will not include its own jQuery.
 
@@ -53,13 +53,17 @@ See [config.yml](./_config/config.yml) for module configuration values
 
 ## Maintainers
 
-+ [dpcdigital@NSWDPC:~$](https://dpc.nsw.gov.au)
++ PD Web Team
 
 ## Bugtracker
 
 We welcome bug reports, pull requests and feature requests on the Github Issue tracker for this project.
 
 Please review the [code of conduct](./code-of-conduct.md) prior to opening a new issue.
+
+## Security
+
+If you have found a security issue with this module, please email digital[@]dpc.nsw.gov.au in the first instance, detailing your findings.
 
 ## Development and contribution
 
