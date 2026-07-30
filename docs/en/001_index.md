@@ -31,10 +31,11 @@ If no editor configuration is provided, an `InvalidArgumentException` is thrown.
 In this example, we are collecting a submission in basic HTML from a `UserSubmissionController`. The field setup is the same as a standard `TextareaField`
 
 ```php
+<?php
 namespace MyApp;
 
 
-use NSWDPC\Utilities\Trumbowyg\TrumboywgEditorField;
+use NSWDPC\Utilities\Trumbowyg\TrumbowygEditorField;
 use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\Fieldlist;
@@ -57,7 +58,7 @@ class UserSubmissionController extends ContentController
             $this,
             'UserEditForm',
             Fieldlist::create(
-                TrumboywgEditorField::create(
+                TrumbowygEditorField::create(
                     'UserProvidedContent', // field name
                     'Write something' // title
                 )->setDescription(
